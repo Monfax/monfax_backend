@@ -7,17 +7,12 @@ import com.LDE.monFax_backend.models.User;
 import com.LDE.monFax_backend.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -39,6 +34,9 @@ public class AuthService {
         user.setEmail(dto.getEmail());
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setRole(UserType.STUDENT);
+        user.setNumero(dto.getNumero());
+        user.setDateNaissance(dto.getDateNaissance());
+        user.setFiliere(dto.getFiliere());
         userRepo.save(user);
 
         return jwtService.generateToken(user);

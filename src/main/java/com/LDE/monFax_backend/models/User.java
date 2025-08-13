@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,9 @@ public class User {
     private String email;
 
     private String password;
+    private String numero;
+    private LocalDate dateNaissance;
+    private String filiere;
 
     @Enumerated(EnumType.STRING)
     private UserType role;

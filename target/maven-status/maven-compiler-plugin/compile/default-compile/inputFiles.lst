@@ -2,6 +2,7 @@
 /home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/configuration/OpenApiConfig.java
 /home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/configuration/SecurityConfig.java
 /home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/configuration/WebClientConfig.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/configuration/corsConfigurer.java
 /home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/controllers/AuthController.java
 /home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/controllers/CorrectionController.java
 /home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/controllers/DepartmentController.java
