@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.LDE.monFax_backend.models.LectureCourse;
@@ -17,7 +18,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.io.IOException;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 @RestController
+@SecurityRequirement(name = "bearerAuth")
 @RequestMapping("/api/courses")
 @RequiredArgsConstructor
 @Tag(name = "Lecture Courses", description = "Gestion des supports de cours")
@@ -47,21 +51,21 @@ public class LectureCourseController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    @Operation(summary = "Créer un support de  cours", description = "Crée un support de cours pour une matiere specifique  avec upload de fichier associé")
-    public ResponseEntity<String> createCourse(
-            @RequestParam("title") String title,
-            @RequestParam("description") String description,
-            @RequestParam("price") Double price,
-            @RequestParam("subjectId") Long subjectId,
-            @RequestParam("file") MultipartFile file) {
-        try {
-            LectureCourse course = courseService.createCourse(title, description, price, subjectId, file);
-            return ResponseEntity.ok("support de cours cree avec success");
-        } catch (IllegalArgumentException | IOException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+@Operation(summary = "Créer un support de  cours", description = "Crée un support de cours pour une matiere specifique  avec upload de fichier associé")
+public ResponseEntity<String> createCourse(
+        @RequestParam("title") String title,
+        @RequestParam("description") String description,
+        @RequestParam("price") Double price,
+        @RequestParam("subjectId") Long subjectId,
+        @RequestPart("file") MultipartFile file) {
+    try {
+        LectureCourse course = courseService.createCourse(title, description, price, subjectId, file);
+        return ResponseEntity.ok("support de cours cree avec success");
+    } catch (IllegalArgumentException | IOException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
+}
 
 
 

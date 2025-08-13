@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,7 +21,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 @RestController
+@SecurityRequirement(name = "bearerAuth")
 @RequestMapping("/api/exams")
 @Tag(name = "Exams", description = "API pour gérer les epreuves")
 
@@ -59,20 +63,20 @@ public class ExamController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    public ResponseEntity<String> createExam(
-            @RequestParam("title") String title,
-            @RequestParam("type") String type,
-            @RequestParam("year") int year,
-            @RequestParam("subjectId") Long subjectId,
-            @RequestParam("file") MultipartFile file) {
-        try {
-            Exam exam = examService.createExam(title, type, year, subjectId, file);
-            return ResponseEntity.ok("creation faite avec success");
-        } catch (IllegalArgumentException | IOException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+   @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+public ResponseEntity<String> createExam(
+        @RequestParam("title") String title,
+        @RequestParam("type") String type,
+        @RequestParam("year") int year,
+        @RequestParam("subjectId") Long subjectId,
+        @RequestPart("file") MultipartFile file) {
+    try {
+        Exam exam = examService.createExam(title, type, year, subjectId, file);
+        return ResponseEntity.ok("creation faite avec success");
+    } catch (IllegalArgumentException | IOException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
+}
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteExam(@PathVariable Long id) {
