@@ -22,7 +22,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/corrections")
 @Tag(name = "Corrections", description = "API pour gérer les corrections d'epreuves")
-
 @RequiredArgsConstructor
 public class CorrectionController {
 

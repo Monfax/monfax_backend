@@ -36,69 +36,67 @@ public class VideoService {
     }
 
     public Video createVideo(String title, String description, Double duration, Double price, Long subjectId, MultipartFile file) throws IOException {
-        // On stocke le fichier dans /uploads/videos
-        String filename = (file.getOriginalFilename());
-        String ext = resourceService.getExtension(filename);
-        if (!ext.equals("mp4")) {
-            throw new IOException("vous devez envoyer la video en mp4");
-        }
-        String fileUrl = resourceService.storeFile(file, "videos");
-
-        Subject subject = subjectRepository.findById(subjectId).orElseThrow(() -> new IllegalArgumentException("Matière introuvable avec l'id : " + subjectId));
-
-        Video video = new Video();
-        video.setTitle(title);
-        video.setDescription(description);
-        video.setDuration(duration);
-        video.setPrice(price);
-        video.setSubject(subject);
-        video.setResourceUrl(fileUrl);
-        video.setSize(file.getSize());
-        video.setCreatedAt(LocalDate.now());
-        video.setNumberOfDownload(0L);
-        video.setNumberOfView(0L);
-
-        return videoRepository.save(video);
-
+    // On stocke le fichier dans /uploads/videos
+    String filename = file.getOriginalFilename();
+    String ext = resourceService.getExtension(filename);
+    if (!ext.equals("mp4")) {
+        throw new IOException("vous devez envoyer la video en mp4");
     }
+    String fileUrl = resourceService.storeFile(file, "videos", List.of("mp4"));
+
+    Subject subject = subjectRepository.findById(subjectId)
+            .orElseThrow(() -> new IllegalArgumentException("Matière introuvable avec l'id : " + subjectId));
+
+    Video video = new Video();
+    video.setTitle(title);
+    video.setDescription(description);
+    video.setDuration(duration);
+    video.setPrice(price);
+    video.setSubject(subject);
+    video.setResourceUrl(fileUrl);
+    video.setSize(file.getSize());
+    video.setCreatedAt(LocalDate.now());
+    video.setNumberOfDownload(0L);
+    video.setNumberOfView(0L);
+
+    return videoRepository.save(video);
+}
 
     public void deleteVideo(Long id) {
         videoRepository.deleteById(id);
     }
 
 
-    public void updateVideo(Long id, String title, String description, MultipartFile file) throws Exception{
-        Optional<Video> optionalVideo = videoRepository.findById(id);
-        if (optionalVideo.isEmpty()) {
-            throw new Exception("Vidéo non trouvée");
-        }
-        Video video = optionalVideo.get();
-
-        if (title != null) video.setTitle(title);
-        if (description != null) video.setDescription(description);
-
-        // Si un nouveau fichier est uploadé, on remplace l'ancien
-        if (file != null && !file.isEmpty()) {
-            // Supprimer l’ancien fichier si existant
-            if (video.getResourceUrl() != null) {
-                resourceService.deleteFile(video.getResourceUrl());
-            }
-
-            String filename=(file.getOriginalFilename());
-            String ext =resourceService.getExtension(filename);
-            if (!ext.equals("mp4")) {
-
-                throw new IOException("vous devez envoyer la video en mp4");
-
-            }
-            // Stocker le nouveau fichier dans un dossier dédié "videos"
-            String newFilePath = resourceService.storeFile(file, "videos");
-            video.setResourceUrl(newFilePath);
-            video.setSize(file.getSize());
-        }
-
-        videoRepository.save(video);
+    public void updateVideo(Long id, String title, String description, MultipartFile file) throws Exception {
+    Optional<Video> optionalVideo = videoRepository.findById(id);
+    if (optionalVideo.isEmpty()) {
+        throw new Exception("Vidéo non trouvée");
     }
+    Video video = optionalVideo.get();
+
+    if (title != null) video.setTitle(title);
+    if (description != null) video.setDescription(description);
+
+    // Si un nouveau fichier est uploadé, on remplace l'ancien
+    if (file != null && !file.isEmpty()) {
+        // Supprimer l’ancien fichier si existant
+        if (video.getResourceUrl() != null) {
+            resourceService.deleteFile(video.getResourceUrl());
+        }
+
+        String filename = file.getOriginalFilename();
+        String ext = resourceService.getExtension(filename);
+        if (!ext.equals("mp4")) {
+            throw new IOException("vous devez envoyer la video en mp4");
+        }
+        // Stocker le nouveau fichier dans un dossier dédié "videos"
+        String newFilePath = resourceService.storeFile(file, "videos", List.of("mp4"));
+        video.setResourceUrl(newFilePath);
+        video.setSize(file.getSize());
+    }
+
+    videoRepository.save(video);
+}
     public long getTotalVideo() {
         return videoRepository.count();
     }

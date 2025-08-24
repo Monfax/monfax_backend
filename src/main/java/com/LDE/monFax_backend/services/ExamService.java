@@ -22,7 +22,6 @@ public class ExamService {
     private final SubjectRepository subjectRepository;
     private final ResourceService resourceService;
 
-    // ✅ Vignette par défaut
     private static final String DEFAULT_THUMBNAIL = "assets/default-pdf.png";
 
     public List<Exam> getAllExams() {
@@ -38,35 +37,28 @@ public class ExamService {
         return exam;
     }
 
-    public Exam createExam(String title, String type, int year, Long subjectId,
-                           MultipartFile file, MultipartFile thumbnail) throws IOException {
-        // 1. Vérifier et sauvegarder le fichier exam
+    public Exam createExam(String title, String type, int year, Long subjectId, MultipartFile file) throws IOException {
         String filename = file.getOriginalFilename();
         String ext = resourceService.getExtension(filename);
         if (!ext.equalsIgnoreCase("pdf") && !ext.equalsIgnoreCase("docx")) {
             throw new IOException("Format de fichier invalide (uniquement PDF ou DOCX).");
         }
-        String fileUrl = resourceService.storeFile(file, "exams");
+        // 1. Stocker le fichier sur disque
+        String fileUrl = resourceService.storeFile(file, "exams", List.of("pdf", "docx"));
 
-        // 2. Sauvegarder la vignette
+        // 2. Générer automatiquement la vignette à partir du fichier stocké si PDF
         String thumbnailUrl;
-        if (thumbnail != null && !thumbnail.isEmpty()) {
-            String thumbExt = resourceService.getExtension(thumbnail.getOriginalFilename());
-            if (!thumbExt.equalsIgnoreCase("png") &&
-                !thumbExt.equalsIgnoreCase("jpg") &&
-                !thumbExt.equalsIgnoreCase("jpeg")) {
-                throw new IOException("Format de vignette invalide (uniquement PNG, JPG ou JPEG).");
-            }
-            thumbnailUrl = resourceService.storeFile(thumbnail, "thumbnails");
+        if (ext.equalsIgnoreCase("pdf")) {
+            String absolutePath = System.getProperty("user.dir") + fileUrl;
+            String thumbnailName = filename.replaceAll("\\.pdf$", "") + "_thumb";
+            thumbnailUrl = resourceService.generatePdfThumbnailFromFile(absolutePath, System.getProperty("user.dir") + "/uploads/thumbnails", thumbnailName);
         } else {
             thumbnailUrl = DEFAULT_THUMBNAIL;
         }
 
-        // 3. Récupérer la matière
         Subject subject = subjectRepository.findById(subjectId)
                 .orElseThrow(() -> new IllegalArgumentException("Sujet introuvable avec l'id : " + subjectId));
 
-        // 4. Créer et sauvegarder l'examen
         Exam exam = new Exam();
         exam.setTitle(title);
         exam.setType(ExamType.valueOf(type.toUpperCase()));
@@ -74,7 +66,7 @@ public class ExamService {
         exam.setSize(file.getSize());
         exam.setSubject(subject);
         exam.setResourceUrl(fileUrl);
-        exam.setThumbnailUrl(thumbnailUrl); // ✅ sauvegarde
+        exam.setThumbnailUrl(thumbnailUrl);
         exam.setCreatedAt(LocalDate.now());
         exam.setNumberOfDownload(0L);
         exam.setNumberOfView(0L);
@@ -94,17 +86,14 @@ public class ExamService {
         }
     }
 
-    public Exam updateExam(Long id, String title, ExamType examType, int year,
-                           MultipartFile file, MultipartFile thumbnail) throws IOException {
+    public Exam updateExam(Long id, String title, ExamType examType, int year, MultipartFile file) throws IOException {
         Exam existingExam = examRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Épreuve inexistante avec l'id " + id));
 
-        // Mise à jour des champs simples
         if (title != null) existingExam.setTitle(title);
         if (examType != null) existingExam.setType(examType);
         if (year != 0) existingExam.setYear(year);
 
-        // Mise à jour du fichier exam
         if (file != null && !file.isEmpty()) {
             if (existingExam.getResourceUrl() != null) {
                 resourceService.deleteFile(existingExam.getResourceUrl());
@@ -113,29 +102,23 @@ public class ExamService {
             if (!ext.equalsIgnoreCase("pdf") && !ext.equalsIgnoreCase("docx")) {
                 throw new IOException("Format de fichier invalide (uniquement PDF ou DOCX).");
             }
-            String newResourceUrl = resourceService.storeFile(file, "exams");
+            String newResourceUrl = resourceService.storeFile(file, "exams", List.of("pdf", "docx"));
             existingExam.setResourceUrl(newResourceUrl);
             existingExam.setSize(file.getSize());
-        }
 
-        // Mise à jour de la vignette
-        if (thumbnail != null && !thumbnail.isEmpty()) {
-            String thumbExt = resourceService.getExtension(thumbnail.getOriginalFilename());
-            if (!thumbExt.equalsIgnoreCase("png") &&
-                !thumbExt.equalsIgnoreCase("jpg") &&
-                !thumbExt.equalsIgnoreCase("jpeg")) {
-                throw new IOException("Format de vignette invalide (uniquement PNG, JPG ou JPEG).");
+            if (ext.equalsIgnoreCase("pdf")) {
+                String absolutePath = System.getProperty("user.dir") + newResourceUrl;
+                String thumbnailName = file.getOriginalFilename().replaceAll("\\.pdf$", "") + "_thumb";
+                String newThumbnailUrl = resourceService.generatePdfThumbnailFromFile(absolutePath, System.getProperty("user.dir") + "/uploads/thumbnails", thumbnailName);
+                existingExam.setThumbnailUrl(newThumbnailUrl);
+            } else {
+                existingExam.setThumbnailUrl(DEFAULT_THUMBNAIL);
             }
-
-            if (existingExam.getThumbnailUrl() != null &&
-                    !existingExam.getThumbnailUrl().equals(DEFAULT_THUMBNAIL)) {
-                resourceService.deleteFile(existingExam.getThumbnailUrl());
-            }
-
-            String newThumbnailUrl = resourceService.storeFile(thumbnail, "thumbnails");
-            existingExam.setThumbnailUrl(newThumbnailUrl);
         }
 
         return examRepository.save(existingExam);
+    }
+    public long getTotalExams(){
+        return examRepository.count();
     }
 }

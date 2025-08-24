@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -38,37 +37,35 @@ public class ExamController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> createExam(
-            @RequestParam("title") String title,
-            @RequestParam("type") String type,
-            @RequestParam("year") int year,
-            @RequestParam("subjectId") Long subjectId,
-            @RequestPart("file") MultipartFile file,
-            @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail) {
-        try {
-            Exam exam = examService.createExam(title, type, year, subjectId, file, thumbnail);
-            return ResponseEntity.ok(exam);
-        } catch (IllegalArgumentException | IOException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        @RequestParam("title") String title,
+        @RequestParam("type") String type,
+        @RequestParam("year") int year,
+        @RequestParam("subjectId") Long subjectId,
+        @RequestPart("file") MultipartFile file) {
+    try {
+        Exam exam = examService.createExam(title, type, year, subjectId, file);
+        return ResponseEntity.ok(exam);
+    } catch (IllegalArgumentException | IOException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
+}
 
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> updateExam(
-            @PathVariable Long id,
-            @RequestParam(value = "title", required = false) String title,
-            @RequestParam(value = "examType", required = false) ExamType examType,
-            @RequestParam(value = "year", required = false, defaultValue = "0") int year,
-            @RequestPart(value = "file", required = false) MultipartFile file,
-            @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail) {
-        try {
-            Exam updatedExam = examService.updateExam(id, title, examType, year, file, thumbnail);
-            return ResponseEntity.ok(updatedExam);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur serveur");
-        }
+        @PathVariable Long id,
+        @RequestParam(value = "title", required = false) String title,
+        @RequestParam(value = "examType", required = false) ExamType examType,
+        @RequestParam(value = "year", required = false, defaultValue = "0") int year,
+        @RequestPart(value = "file", required = false) MultipartFile file) {
+    try {
+        Exam updatedExam = examService.updateExam(id, title, examType, year, file);
+        return ResponseEntity.ok(updatedExam);
+    } catch (RuntimeException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur serveur");
     }
+}
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteExam(@PathVariable Long id) {
