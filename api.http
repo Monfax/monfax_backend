@@ -1,0 +1,23 @@
+curl -X POST "http://localhost:8080/api/resources/upload" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0cmlvbXBoZUBleGFtcGxlLmNvbSIsInVzZXJuYW1lIjoidHJpb21waGUiLCJpZCI6MiwiaWF0IjoxNzU3MDE2MDE3LCJleHAiOjE3NTcxMDI0MTd9.McrGJzKyNtKHDI87Bc-sIgQPvlX_Uec_ghYavpolSr0" \
+  -F "file=@/home/triomphe/Images/WhatsApp_Image.jpeg"
+
+###
+curl -X POST http://localhost:8080/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "triomphe",
+    "email": "triomphe@example.com",
+    "password": "Passe123"
+  }'
+
+
+
+
+###
+
+curl -X POST http://localhost:8080/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username": "stephane", "password": "monMotDePasse123"}'
+
+###

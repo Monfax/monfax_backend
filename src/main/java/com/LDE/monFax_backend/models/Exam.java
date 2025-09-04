@@ -9,6 +9,7 @@ import lombok.*;
 
 @Entity
 @Data
+@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 public class Exam extends Resource {

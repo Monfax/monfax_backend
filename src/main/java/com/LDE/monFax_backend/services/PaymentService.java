@@ -98,6 +98,7 @@ public class PaymentService {
         );
     }
 
+    @SuppressWarnings("unchecked")
     private String createAndSaveInvoice(
             double amount, String description, User user,
             Video video, Subject subject, Semester semester,
@@ -110,7 +111,7 @@ public class PaymentService {
         requestBody.put("invoice", invoiceMap);
         requestBody.put("store", storeMap);
 
-        Map<String, Object> response = webClient.post()
+        Map<String, Object> response = (Map<String, Object>) webClient.post()
                 .uri(paydunyaUrl)
                 .header("PAYDUNYA-MASTER-KEY", masterKey)
                 .header("PAYDUNYA-PRIVATE-KEY", privateKey)

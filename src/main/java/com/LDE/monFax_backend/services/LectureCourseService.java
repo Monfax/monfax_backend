@@ -3,7 +3,6 @@ package com.LDE.monFax_backend.services;
 
 import com.LDE.monFax_backend.models.LectureCourse;
 import com.LDE.monFax_backend.models.Subject;
-import com.LDE.monFax_backend.models.Video;
 import com.LDE.monFax_backend.repositories.LectureCourseRepository;
 import com.LDE.monFax_backend.repositories.SubjectRepository;
 import lombok.RequiredArgsConstructor;

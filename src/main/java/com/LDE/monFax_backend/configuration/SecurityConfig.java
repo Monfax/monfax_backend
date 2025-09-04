@@ -27,12 +27,14 @@ public class SecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth.
-                        requestMatchers("api/auth/login",
-                                "api/auth/register",
+                        requestMatchers("/api/auth/login",
+                                "/api/auth/register",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
-                        "/api/payment/ipn").permitAll()
+                                "/api/payment/ipn",
+                                "/api/resources/upload",
+                                "/api/resources/**").permitAll()
                         .anyRequest().authenticated()
                 ).oauth2ResourceServer(oauth -> oauth.jwt(jwt -> jwt.decoder(jwtDecoder())))
                 .build();

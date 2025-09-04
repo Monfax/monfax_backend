@@ -1,6 +1,4 @@
 package com.LDE.monFax_backend.controllers;
-
-import com.LDE.monFax_backend.models.Department;
 import com.LDE.monFax_backend.models.Program;
 import com.LDE.monFax_backend.requests.ProgramRequest;
 import com.LDE.monFax_backend.services.ProgramService;

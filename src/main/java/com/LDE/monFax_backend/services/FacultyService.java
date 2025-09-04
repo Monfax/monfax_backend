@@ -1,6 +1,5 @@
 package com.LDE.monFax_backend.services;
 
-import com.LDE.monFax_backend.models.Department;
 import com.LDE.monFax_backend.models.Faculty;
 import com.LDE.monFax_backend.repositories.FacultyRepository;
 import com.LDE.monFax_backend.requests.FacultyRequest;

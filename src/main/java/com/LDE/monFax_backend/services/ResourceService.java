@@ -6,7 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,11 +17,19 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+<<<<<<< HEAD
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+=======
+// PDFBox imports
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.rendering.PDFRenderer;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+
+>>>>>>> 290ed71 (mis ajour ajout de thumbnail)
 
 @Service
 @RequiredArgsConstructor
@@ -57,8 +66,13 @@ public class ResourceService {
         }
 
         String extension = getExtension(originalName);
+<<<<<<< HEAD
         if (!allowedExtensions.contains(extension.toLowerCase())) {
             throw new IllegalArgumentException("Extension non supportée : " + extension + ". Extensions autorisées : " + allowedExtensions);
+=======
+        if (!ALLOWED_EXTENSIONS.contains(extension.toLowerCase())) {
+            throw new IllegalArgumentException("Extension non supportée : " + extension + ". Seuls les fichiers .pdf, .docx et .mp4 sont autorisés.");
+>>>>>>> 290ed71 (mis ajour ajout de thumbnail)
         }
 
         String filename = UUID.randomUUID() + "_" + originalName;
@@ -70,6 +84,67 @@ public class ResourceService {
         file.transferTo(filePath.toFile());
 
         return "/uploads/" + folderName + "/" + filename;
+    }
+    /**
+     * Crée une miniature pour une ressource.
+     * La logique de conversion dépend de l'extension du fichier.
+     * @param file Le fichier téléversé.
+     * @return Le chemin relatif de la miniature sauvegardée.
+     * @throws IOException Si une erreur d'entrée/sortie se produit.
+     */
+    public String createThumbnail(MultipartFile file) throws IOException {
+        String originalName = file.getOriginalFilename();
+        if (originalName == null) {
+            throw new IllegalArgumentException("Nom de fichier original est null.");
+        }
+        String ext = getExtension(originalName);
+        String thumbnailFilename = UUID.randomUUID().toString() + ".png"; // PNG est un bon format pour les miniatures
+
+        // Créer le répertoire de miniatures s'il n'existe pas
+        Path thumbnailUploadPath = Paths.get(System.getProperty("user.dir"), "uploads", "thumbnails");
+        Files.createDirectories(thumbnailUploadPath);
+
+        Path thumbnailFilePath = thumbnailUploadPath.resolve(thumbnailFilename);
+
+        BufferedImage thumbnailImage = null;
+
+        // Logique de conversion selon l'extension
+        switch (ext.toLowerCase()) {
+            case "pdf":
+                //  logique de conversion PDF :
+                PDDocument document = PDDocument.load(file.getInputStream());
+                PDFRenderer pdfRenderer = new PDFRenderer(document);
+                thumbnailImage = pdfRenderer.renderImageWithDPI(0, 100); // Rendre la première page à 100 DPI
+                document.close();
+
+                // Placeholder: si la bibliothèque n'est pas ajoutée, on peut créer une image simple
+                // thumbnailImage = new BufferedImage(300, 400, BufferedImage.TYPE_INT_RGB);
+
+                break;
+            case "docx":
+                // logique de conversion DOCX (complexe, ceci est un placeholder) :
+                XWPFDocument doc = new XWPFDocument(file.getInputStream());
+                
+
+                // Placeholder: si la bibliothèque n'est pas ajoutée, on peut créer une image simple
+                // thumbnailImage = new BufferedImage(300, 400, BufferedImage.TYPE_INT_RGB);
+                doc.close();
+                break;
+            case "mp4":
+                
+                thumbnailImage = new BufferedImage(300, 400, BufferedImage.TYPE_INT_RGB);
+                
+                break;
+            default:
+                throw new IllegalArgumentException("Extension de fichier non prise en charge pour la miniature : " + ext);
+        }
+
+        if (thumbnailImage != null) {
+            ImageIO.write(thumbnailImage, "png", thumbnailFilePath.toFile());
+            return "/uploads/thumbnails/" + thumbnailFilename;
+        }
+
+        return null;
     }
 
     // Ajoute cette méthode pour l'extraction d'extension
@@ -92,7 +167,12 @@ public class ResourceService {
         if (resource.getResourceUrl() == null || resource.getResourceUrl().isEmpty()) {
             throw new IOException("Aucun fichier associé à cette ressource.");
         }
+<<<<<<< HEAD
         Path path = Paths.get(baseDir + resource.getResourceUrl());
+=======
+
+        Path path = Paths.get(baseDir+resource.getResourceUrl());
+>>>>>>> 290ed71 (mis ajour ajout de thumbnail)
         return Files.readAllBytes(path);
     }
     public String generatePdfThumbnailFromFile(String pdfPath, String thumbnailsDir, String thumbnailName) throws IOException {

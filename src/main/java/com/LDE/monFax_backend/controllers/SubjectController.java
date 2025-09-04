@@ -3,7 +3,6 @@ package com.LDE.monFax_backend.controllers;
 import com.LDE.monFax_backend.models.Subject;
 import com.LDE.monFax_backend.requests.SubjectRequest;
 import com.LDE.monFax_backend.services.SubjectService;
-import com.LDE.monFax_backend.services.SubjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

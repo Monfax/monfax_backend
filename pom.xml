@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.0</version>
+        <version>3.5.5</version>
         <relativePath/> </parent>
     <groupId>com.LDE</groupId>
     <artifactId>monFax-backend</artifactId>
@@ -108,16 +108,44 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
+        <!-- Dépendances pour la génération de miniatures de documents -->
+        <!-- Apache PDFBox pour la conversion de PDF en image -->
+        <!-- Apache PDFBox pour la conversion de PDF en image -->
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>2.0.29</version>
+        </dependency>
+
+        <!-- Apache POI pour manipuler les fichiers Office -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>5.2.5</version>
+        </dependency>
+
+        <!-- Apache POI OOXML pour gérer les fichiers DOCX, XLSX, PPTX -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.2.5</version>
+        </dependency>
+        <dependency>
+            <groupId>de.flapdoodle.embed</groupId>
+            <artifactId>de.flapdoodle.embed.mongo</artifactId>
+            <version>3.5.4</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.3.1</version> <configuration>
-                    <encoding>UTF-8</encoding>
-                </configuration>
+                <artifactId>maven-resources-plugin</artifactId> <configuration>
+                <encoding>UTF-8</encoding>
+            </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -148,8 +176,6 @@
                         </configuration>
                     </execution>
                 </executions>
-                <dependencies>
-                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

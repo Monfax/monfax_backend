@@ -38,7 +38,12 @@ public class ExamService {
     }
 
     public Exam createExam(String title, String type, int year, Long subjectId, MultipartFile file) throws IOException {
+<<<<<<< HEAD
         String filename = file.getOriginalFilename();
+=======
+        // 1. Gérer le fichier téléversé et vérifier le format
+        String filename = (file.getOriginalFilename());
+>>>>>>> 290ed71 (mis ajour ajout de thumbnail)
         String ext = resourceService.getExtension(filename);
         if (!ext.equalsIgnoreCase("pdf") && !ext.equalsIgnoreCase("docx")) {
             throw new IOException("Format de fichier invalide (uniquement PDF ou DOCX).");
@@ -56,9 +61,23 @@ public class ExamService {
             thumbnailUrl = DEFAULT_THUMBNAIL;
         }
 
+<<<<<<< HEAD
         Subject subject = subjectRepository.findById(subjectId)
                 .orElseThrow(() -> new IllegalArgumentException("Sujet introuvable avec l'id : " + subjectId));
 
+=======
+        // Stockage du fichier principal
+        String fileUrl = resourceService.storeFile(file, "exams");
+
+        // 2. Créer le fichier de la miniature
+        String thumbnailUrl = resourceService.createThumbnail(file);
+
+        // 3. Récupérer la matière
+        Subject subject = subjectRepository.findById(subjectId)
+                .orElseThrow(() -> new IllegalArgumentException("Sujet introuvable avec l'id : " + subjectId));
+
+        // 4. Créer et sauvegarder l'examen, en associant la miniature
+>>>>>>> 290ed71 (mis ajour ajout de thumbnail)
         Exam exam = new Exam();
         exam.setTitle(title);
         exam.setType(ExamType.valueOf(type.toUpperCase()));
@@ -66,7 +85,11 @@ public class ExamService {
         exam.setSize(file.getSize());
         exam.setSubject(subject);
         exam.setResourceUrl(fileUrl);
+<<<<<<< HEAD
         exam.setThumbnailUrl(thumbnailUrl);
+=======
+        exam.setThumbnailUrl(thumbnailUrl); // On associe la nouvelle URL
+>>>>>>> 290ed71 (mis ajour ajout de thumbnail)
         exam.setCreatedAt(LocalDate.now());
         exam.setNumberOfDownload(0L);
         exam.setNumberOfView(0L);
@@ -106,6 +129,7 @@ public class ExamService {
             existingExam.setResourceUrl(newResourceUrl);
             existingExam.setSize(file.getSize());
 
+<<<<<<< HEAD
             if (ext.equalsIgnoreCase("pdf")) {
                 String absolutePath = System.getProperty("user.dir") + newResourceUrl;
                 String thumbnailName = file.getOriginalFilename().replaceAll("\\.pdf$", "") + "_thumb";
@@ -114,6 +138,11 @@ public class ExamService {
             } else {
                 existingExam.setThumbnailUrl(DEFAULT_THUMBNAIL);
             }
+=======
+            // Créer et associer une nouvelle miniature
+            String newThumbnailUrl = resourceService.createThumbnail(file);
+            existingExam.setThumbnailUrl(newThumbnailUrl);
+>>>>>>> 290ed71 (mis ajour ajout de thumbnail)
         }
 
         return examRepository.save(existingExam);

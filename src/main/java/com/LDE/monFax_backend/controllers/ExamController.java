@@ -35,6 +35,7 @@ public class ExamController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+<<<<<<< HEAD
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> createExam(
         @RequestParam("title") String title,
@@ -47,6 +48,21 @@ public class ExamController {
         return ResponseEntity.ok(exam);
     } catch (IllegalArgumentException | IOException e) {
         return ResponseEntity.badRequest().body(e.getMessage());
+=======
+    @PostMapping
+    public ResponseEntity<String> createExam(
+            @RequestParam("title") String title,
+            @RequestParam("type") String type,
+            @RequestParam("year") int year,
+            @RequestParam("subjectId") Long subjectId,
+            @RequestParam("file") MultipartFile file) {
+        try {
+            examService.createExam(title, type, year, subjectId, file);
+            return ResponseEntity.ok("creation faite avec success");
+        } catch (IllegalArgumentException | IOException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+>>>>>>> 290ed71 (mis ajour ajout de thumbnail)
     }
 }
 

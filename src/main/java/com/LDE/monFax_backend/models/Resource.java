@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 
@@ -14,6 +15,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@EntityListeners(AuditingEntityListener.class)  // 👈 obligatoire pour activer @CreatedDate
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Resource {
     @Id
@@ -21,6 +23,8 @@ public class Resource {
     private Long id;
 
     private String resourceUrl;
+
+    private String thumbnailUrl;
 
     private String title;
 
@@ -31,5 +35,8 @@ public class Resource {
     private Long numberOfView;
 
     @CreatedDate
+    @Column(updatable = false)
     private LocalDate createdAt;
+
+
 }

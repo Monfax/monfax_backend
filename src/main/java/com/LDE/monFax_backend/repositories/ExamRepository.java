@@ -1,6 +1,5 @@
 package com.LDE.monFax_backend.repositories;
 
-
 import com.LDE.monFax_backend.enumerations.ExamType;
 import com.LDE.monFax_backend.models.Exam;
 import org.springframework.data.jpa.repository.JpaRepository;
