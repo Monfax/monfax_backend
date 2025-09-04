@@ -14,22 +14,16 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Program {
+public class Filiere {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name;
-
-    @ManyToOne
-    @JsonBackReference
-    @JoinColumn(name = "department_id")
-    private Department department;
-
-    @OneToMany(mappedBy = "program", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "filiere", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<Semester> semester = new ArrayList<>();
+    private List<Program> programs = new ArrayList<>();
     @ManyToOne
     @JsonBackReference
-    @JoinColumn(name = "filiere_id")
-    private Filiere filiere;
+    @JoinColumn(name = "niveau_id")
+    private Niveau niveau;
 }
