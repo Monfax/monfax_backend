@@ -1,5 +1,6 @@
 package com.LDE.monFax_backend.controllers;
 
+import org.springframework.data.domain.Page;
 import com.LDE.monFax_backend.models.User;
 import com.LDE.monFax_backend.services.UserService;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +18,10 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
-        return ResponseEntity.ok(users);
+     public ResponseEntity<Page<User>> getAllUsers(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size) {
+    return ResponseEntity.ok(userService.getAllUsers(page, size));
     }
 
     @GetMapping("/{id}")

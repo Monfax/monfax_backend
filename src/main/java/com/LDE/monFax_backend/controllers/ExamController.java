@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,16 +32,18 @@ public class ExamController {
 
     @GetMapping
     @Operation(
-            summary = "Lister tous les epreuves",
-            description = "Récupère la liste complète des epreuves",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Liste des epreuves récupérée",
-                            content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = Exam.class)))
-            }
+        summary = "Lister les épreuves avec pagination",
+        description = "Récupère une liste paginée des épreuves",
+        responses = {
+                @ApiResponse(responseCode = "200", description = "Liste paginée des épreuves récupérée",
+                        content = @Content(mediaType = "application/json",
+                                schema = @Schema(implementation = Exam.class)))
+        }
     )
-    public ResponseEntity<List<Exam>> getAllExams() {
-        return ResponseEntity.ok(examService.getAllExams());
+     public ResponseEntity<Page<Exam>> getAllExams(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size) {
+    return ResponseEntity.ok(examService.getAllExams(page, size));
     }
 
     @GetMapping("/{id}")

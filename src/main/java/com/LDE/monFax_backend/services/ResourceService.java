@@ -6,6 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -28,8 +31,9 @@ public class ResourceService {
 
     private static final List<String> ALLOWED_EXTENSIONS = List.of("pdf", "docx","mp4");
 
-    public List<Resource> getAllResources() {
-        return resourceRepository.findAll();
+    public Page<Resource> getAllResources(int page, int size) {
+    Pageable pageable = PageRequest.of(page, size);
+    return resourceRepository.findAll(pageable);
     }
 
     public Optional<Resource> getResourceById(Long id) {

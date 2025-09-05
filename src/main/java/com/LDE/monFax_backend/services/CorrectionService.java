@@ -8,6 +8,11 @@ import com.LDE.monFax_backend.repositories.ExamRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+
+
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -22,8 +27,9 @@ public class CorrectionService {
     private final ExamRepository examRepository;
     private final ResourceService resourceService;
 
-    public List<Correction> getAllCorrections() {
-        return correctionRepository.findAll();
+    public Page<Correction> getAllCorrections(int page, int size) {
+    Pageable pageable = PageRequest.of(page, size);
+    return correctionRepository.findAll(pageable);
     }
 
     public Optional<Correction> getCorrectionById(Long id) {

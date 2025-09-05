@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.data.domain.Page;
+
 
 import java.io.IOException;
 import java.util.List;
@@ -29,16 +31,19 @@ public class CorrectionController {
 
     @GetMapping
     @Operation(
-            summary = "Lister toutes les corrections",
-            description = "Récupère la liste complète des corrections disponibles",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Liste des corrections récupérée",
-                            content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = Correction.class))) } )
-    public ResponseEntity<List<Correction>> getAllCorrections() {
-        return ResponseEntity.ok(correctionService.getAllCorrections());
+        summary = "Lister les corrections avec pagination",
+        description = "Récupère une liste paginée des corrections disponibles",
+        responses = {
+                @ApiResponse(responseCode = "200", description = "Liste paginée des corrections récupérée",
+                        content = @Content(mediaType = "application/json",
+                                schema = @Schema(implementation = Correction.class)))
+        }
+    )
+    public ResponseEntity<Page<Correction>> getAllCorrections(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size) {
+    return ResponseEntity.ok(correctionService.getAllCorrections(page, size));
     }
-
 
     @GetMapping("/{id}")
     @Operation(
