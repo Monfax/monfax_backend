@@ -1,1 +1,11 @@
 /home/yan/monfax_backend/src/test/java/com/LDE/monFax_backend/MonFaxBackendApplicationTests.java
+/home/yan/monfax_backend/src/test/java/com/LDE/monFax_backend/TestConfig/TestSecurityConfig.java
+/home/yan/monfax_backend/src/test/java/com/LDE/monFax_backend/TestController/AuthControllerIntegrationTest.java
+/home/yan/monfax_backend/src/test/java/com/LDE/monFax_backend/TestController/CorrectionControllerIntegrationTest.java
+/home/yan/monfax_backend/src/test/java/com/LDE/monFax_backend/TestController/DepartmentControllerIntegrationTest.java
+/home/yan/monfax_backend/src/test/java/com/LDE/monFax_backend/TestController/ExamControllerIntegrationTest.java
+/home/yan/monfax_backend/src/test/java/com/LDE/monFax_backend/TestService/AuthServiceTest.java
+/home/yan/monfax_backend/src/test/java/com/LDE/monFax_backend/TestService/CorrectionServiceTest.java
+/home/yan/monfax_backend/src/test/java/com/LDE/monFax_backend/TestService/DepartmentServiceTest.java
+/home/yan/monfax_backend/src/test/java/com/LDE/monFax_backend/TestService/ExamServiceTest.java
+/home/yan/monfax_backend/src/test/java/com/LDE/monFax_backend/TestService/JwtServiceTest.java
