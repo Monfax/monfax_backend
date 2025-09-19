@@ -4,6 +4,10 @@ import com.LDE.monFax_backend.exceptions.UserNotFoundException;
 import com.LDE.monFax_backend.models.User;
 import com.LDE.monFax_backend.repositories.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,8 +30,9 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public Page<User> getAllUsers(int page, int size) {
+    Pageable pageable = PageRequest.of(page, size);
+    return userRepository.findAll(pageable);
     }
 
     public long numberUsers(){

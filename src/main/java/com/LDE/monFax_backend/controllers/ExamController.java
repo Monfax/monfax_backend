@@ -5,6 +5,7 @@ import com.LDE.monFax_backend.models.Exam;
 import com.LDE.monFax_backend.services.ExamService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,20 @@ public class ExamController {
     private final ExamService examService;
 
     @GetMapping
+    @Operation(
+        summary = "Lister les épreuves avec pagination",
+        description = "Récupère une liste paginée des épreuves",
+        responses = {
+                @ApiResponse(responseCode = "200", description = "Liste paginée des épreuves récupérée",
+                        content = @Content(mediaType = "application/json",
+                                schema = @Schema(implementation = Exam.class)))
+        }
+    )
+     public ResponseEntity<Page<Exam>> getAllExams(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size) {
+    return ResponseEntity.ok(examService.getAllExams(page, size));
+
     public ResponseEntity<List<Exam>> getAllExams() {
         return ResponseEntity.ok(examService.getAllExams());
     }

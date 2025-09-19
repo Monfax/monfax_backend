@@ -1,18 +1,23 @@
 package com.LDE.monFax_backend.services;
 
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.LDE.monFax_backend.enumerations.ExamType;
 import com.LDE.monFax_backend.models.Exam;
 import com.LDE.monFax_backend.models.Subject;
 import com.LDE.monFax_backend.repositories.ExamRepository;
 import com.LDE.monFax_backend.repositories.SubjectRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +26,11 @@ public class ExamService {
     private final ExamRepository examRepository;
     private final SubjectRepository subjectRepository;
     private final ResourceService resourceService;
+
+    public Page<Exam> getAllExams(int page, int size) {
+    Pageable pageable = PageRequest.of(page, size);
+    return examRepository.findAll(pageable);
+}
 
     private static final String DEFAULT_THUMBNAIL = "assets/default-pdf.png";
 
