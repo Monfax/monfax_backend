@@ -1,64 +1,66 @@
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\configuration\SecurityConfig.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\configuration\WebClientConfig.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\controllers\AuthController.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\controllers\CorrectionController.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\controllers\DepartmentController.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\controllers\ExamController.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\controllers\FacultyController.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\controllers\LectureCourseController.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\controllers\PaymentController.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\controllers\ProgramController.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\controllers\ResourceController.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\controllers\SubjectController.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\controllers\UserController.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\controllers\VideoController.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\dto\LoginDTO.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\dto\RegisterDTO.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\enumerations\ExamType.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\enumerations\PaymentStatus.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\enumerations\UserType.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\exception\PaymentException.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\exceptions\RestExceptionHandler.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\exceptions\UserNotFoundException.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\models\Correction.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\models\Department.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\models\Exam.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\models\Faculty.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\models\LectureCourse.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\models\Payment.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\models\Program.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\models\Resource.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\models\Semester.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\models\Subject.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\models\User.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\models\Video.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\MonFaxBackendApplication.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\repositories\CorrectionRepository.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\repositories\DepartmentRepository.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\repositories\ExamRepository.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\repositories\FacultyRepository.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\repositories\LectureCourseRepository.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\repositories\PaymentRepository.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\repositories\ProgramRepository.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\repositories\ResourceRepository.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\repositories\SemesterRepository.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\repositories\SubjectRepository.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\repositories\UserRepository.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\repositories\VideoRepository.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\requests\DepartmentRequest.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\requests\FacultyRequest.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\requests\ProgramRequest.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\requests\SubjectRequest.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\services\AuthService.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\services\CorrectionService.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\services\DepartmentService.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\services\ExamService.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\services\FacultyService.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\services\JwtService.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\services\LectureCourseService.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\services\PaymentService.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\services\ProgramService.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\services\ResourceService.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\services\SubjectService.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\services\UserService.java
-C:\Users\SOP TECH\Desktop\monfax_backend\src\main\java\com\LDE\monFax_backend\services\VideoService.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/MonFaxBackendApplication.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/configuration/OpenApiConfig.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/configuration/SecurityConfig.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/configuration/WebClientConfig.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/configuration/corsConfigurer.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/controllers/AuthController.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/controllers/CorrectionController.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/controllers/DepartmentController.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/controllers/ExamController.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/controllers/FacultyController.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/controllers/LectureCourseController.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/controllers/PaymentController.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/controllers/ProgramController.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/controllers/ResourceController.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/controllers/SubjectController.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/controllers/UserController.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/controllers/VideoController.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/dto/LoginDTO.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/dto/RegisterDTO.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/enumerations/ExamType.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/enumerations/PaymentStatus.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/enumerations/UserType.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/exception/PaymentException.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/exceptions/RestExceptionHandler.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/exceptions/UserNotFoundException.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/models/Correction.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/models/Department.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/models/Exam.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/models/Faculty.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/models/LectureCourse.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/models/Payment.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/models/Program.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/models/Resource.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/models/Semester.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/models/Subject.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/models/User.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/models/Video.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/repositories/CorrectionRepository.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/repositories/DepartmentRepository.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/repositories/ExamRepository.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/repositories/FacultyRepository.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/repositories/LectureCourseRepository.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/repositories/PaymentRepository.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/repositories/ProgramRepository.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/repositories/ResourceRepository.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/repositories/SemesterRepository.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/repositories/SubjectRepository.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/repositories/UserRepository.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/repositories/VideoRepository.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/requests/DepartmentRequest.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/requests/FacultyRequest.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/requests/ProgramRequest.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/requests/SubjectRequest.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/services/AuthService.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/services/CorrectionService.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/services/DepartmentService.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/services/ExamService.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/services/FacultyService.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/services/JwtService.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/services/LectureCourseService.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/services/PaymentService.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/services/ProgramService.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/services/ResourceService.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/services/SubjectService.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/services/UserService.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/services/VideoService.java

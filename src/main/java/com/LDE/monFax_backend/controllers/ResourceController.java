@@ -15,7 +15,10 @@ import org.springframework.data.domain.Page;
 import java.io.IOException;
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 @RestController
+@SecurityRequirement(name = "bearerAuth")
 @RequestMapping("/api/resources")
 @RequiredArgsConstructor
 public class ResourceController {

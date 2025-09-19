@@ -14,7 +14,7 @@ import lombok.*;
 public class Exam extends Resource {
 
     private ExamType type;
-
+    private String thumbnailUrl;
     private int year;
 
 
