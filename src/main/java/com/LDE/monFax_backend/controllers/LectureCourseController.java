@@ -51,7 +51,6 @@ public class LectureCourseController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-<<<<<<< HEAD
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 @Operation(summary = "Créer un support de  cours", description = "Crée un support de cours pour une matiere specifique  avec upload de fichier associé")
 public ResponseEntity<String> createCourse(
@@ -65,22 +64,6 @@ public ResponseEntity<String> createCourse(
         return ResponseEntity.ok("support de cours cree avec success");
     } catch (IllegalArgumentException | IOException e) {
         return ResponseEntity.badRequest().body(e.getMessage());
-=======
-    @PostMapping
-    @Operation(summary = "Créer un support de  cours", description = "Crée un support de cours pour une matiere specifique  avec upload de fichier associé")
-    public ResponseEntity<String> createCourse(
-            @RequestParam("title") String title,
-            @RequestParam("description") String description,
-            @RequestParam("price") Double price,
-            @RequestParam("subjectId") Long subjectId,
-            @RequestParam("file") MultipartFile file) {
-        try {
-            courseService.createCourse(title, description, price, subjectId, file);
-            return ResponseEntity.ok("support de cours cree avec success");
-        } catch (IllegalArgumentException | IOException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
->>>>>>> 290ed71 (mis ajour ajout de thumbnail)
     }
 }
 

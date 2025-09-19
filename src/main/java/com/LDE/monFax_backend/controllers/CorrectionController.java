@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -57,15 +56,6 @@ public class CorrectionController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-<<<<<<< HEAD
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-@Operation(
-    summary = "Créer une nouvelle correction",
-    description = "Crée une correction liée à un examen donné avec un fichier uploadé",
-    responses = {
-        @ApiResponse(responseCode = "200", description = "Correction créée avec succès"),
-        @ApiResponse(responseCode = "400", description = "Requête invalide (erreur lors de la création)")
-=======
     @PostMapping
     @Operation(
             summary = "Créer une nouvelle correction",
@@ -90,25 +80,7 @@ public class CorrectionController {
         } catch (IllegalArgumentException | IOException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
->>>>>>> 290ed71 (mis ajour ajout de thumbnail)
     }
-)
-public ResponseEntity<String> createCorrection(
-    @Parameter(description = "Titre de la correction", required = true)
-    @RequestParam("title") String title,
-    @Parameter(description = "Prix de la correction", required = true)
-    @RequestParam("price") Double price,
-    @Parameter(description = "ID de l'examen lié", required = true)
-    @RequestParam("examId") Long examId,
-    @Parameter(description = "Fichier de la correction au format PDF ou DOCX", required = true)
-    @RequestPart("file") MultipartFile file) {
-    try {
-        Correction correction = correctionService.createCorrection(title, price, examId, file);
-        return ResponseEntity.ok("creation de la correction effectuée avec success");
-    } catch (IllegalArgumentException | IOException e) {
-        return ResponseEntity.badRequest().body(e.getMessage());
-    }
-}
     @PutMapping("/{id}")
     public ResponseEntity<Correction> updateCorrection(
             @Parameter(description = "ID de la correction à mettre à jour", required = true)

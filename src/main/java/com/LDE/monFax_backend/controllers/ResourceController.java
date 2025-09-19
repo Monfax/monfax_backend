@@ -4,7 +4,6 @@ package com.LDE.monFax_backend.controllers;
 import com.LDE.monFax_backend.models.Resource;
 import com.LDE.monFax_backend.repositories.ResourceRepository;
 import com.LDE.monFax_backend.services.ResourceService;
-import com.LDE.monFax_backend.services.ThumbnailGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -14,10 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
@@ -26,13 +23,10 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 @RequestMapping("/api/resources")
 @RequiredArgsConstructor
 public class ResourceController {
-    
-    // Injecte les services et le repository nécessaires
+
     private final ResourceService resourceService;
     private final ResourceRepository resourceRepository;
-    private final ThumbnailGenerator thumbnailService;
 
-    // Injecte la valeur du répertoire de base à partir de application.properties
     @Value("${resources.base-dir}")
     private String baseDirectory;
 
@@ -53,46 +47,26 @@ public class ResourceController {
         resourceService.deleteResource(id);
         return ResponseEntity.noContent().build();
     }
-    
-    y
-    @PostMapping("/upload")
-    public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file) {
-        if (file.isEmpty()) {
-            return new ResponseEntity<>("Le fichier est vide.", HttpStatus.BAD_REQUEST);
-        }
 
-        try {
-            // Sauvegarde du fichier original dans le répertoire spécifié
-            Path originalFilePath = Paths.get(baseDirectory, file.getOriginalFilename());
-            Files.write(originalFilePath, file.getBytes());
-
-            // Génération de la vignette en utilisant le service dédié
-            String thumbnailPath = thumbnailService.generateThumbnail(originalFilePath.toString());
-
-            /
-
-            return new ResponseEntity<>(
-                "Fichier original et vignette générés avec succès. \n" +
-                "Chemin du fichier original : " + originalFilePath.toString() + "\n" +
-                "Chemin de la vignette : " + thumbnailPath, 
-                HttpStatus.OK
-            );
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>("Échec du téléchargement et de la génération de la vignette : " + e.getMessage(), 
-                                        HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+public ResponseEntity<?> handleFileUpload(@RequestParam("file") MultipartFile file) {
+    try {
+        Map<String, String> paths = resourceService.storeFileAndGenerateThumbnail(file, "resources");
+        return ResponseEntity.ok("Fichier et vignette générés :\n" +
+                "Fichier : " + paths.get("filePath") + "\n" +
+                "Vignette : " + paths.get("thumbnailPath"));
+    } catch (Exception e) {
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Erreur lors de l'upload : " + e.getMessage());
     }
-
+}
 
     @GetMapping("/{id}/download")
     public ResponseEntity<?> downloadResource(@PathVariable Long id) {
         try {
             Resource resource = resourceRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Ressource non trouvée en base"));
-
-            System.out.println("Téléchargement ressource: " + resource.getTitle() + ", url=" + resource.getResourceUrl());
 
             byte[] data = resourceService.downloadResource(resource);
 

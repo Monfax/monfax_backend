@@ -42,7 +42,6 @@ public class VideoController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-<<<<<<< HEAD
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 @Operation(summary = "Créer un cours vidéo", description = "Crée un cours vidéo avec upload de fichier vidéo")
 public ResponseEntity<String> createVideo(
@@ -57,23 +56,6 @@ public ResponseEntity<String> createVideo(
         return ResponseEntity.ok("cours video cree avec success");
     } catch (IllegalArgumentException | IOException e) {
         return ResponseEntity.badRequest().body(e.getMessage());
-=======
-    @PostMapping
-    @Operation(summary = "Créer un cours vidéo", description = "Crée un cours vidéo avec upload de fichier vidéo")
-    public ResponseEntity<String> createVideo(
-            @RequestParam("title") String title,
-            @RequestParam("description") String description,
-            @RequestParam("duration") Double duration,
-            @RequestParam("price") Double price,
-            @RequestParam("subjectId") Long subjectId,
-            @RequestParam("file") MultipartFile file) {
-        try {
-            videoService.createVideo(title, description, duration, price, subjectId, file);
-            return ResponseEntity.ok("cours video cree avec success");
-        } catch (IllegalArgumentException | IOException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
->>>>>>> 290ed71 (mis ajour ajout de thumbnail)
     }
 }
 

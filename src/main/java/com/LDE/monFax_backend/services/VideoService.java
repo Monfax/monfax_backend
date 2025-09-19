@@ -36,44 +36,11 @@ public class VideoService {
     }
 
     public Video createVideo(String title, String description, Double duration, Double price, Long subjectId, MultipartFile file) throws IOException {
-<<<<<<< HEAD
     // On stocke le fichier dans /uploads/videos
     String filename = file.getOriginalFilename();
     String ext = resourceService.getExtension(filename);
     if (!ext.equals("mp4")) {
         throw new IOException("vous devez envoyer la video en mp4");
-=======
-        // On stocke le fichier dans /uploads/videos
-        String filename = (file.getOriginalFilename());
-        String ext = resourceService.getExtension(filename);
-        if (!ext.equals("mp4")) {
-            throw new IOException("vous devez envoyer la video en mp4");
-        }
-        String fileUrl = resourceService.storeFile(file, "videos");
-
-        // Créer le fichier de la miniature pour la vidéo
-        // Note: La génération de miniature pour une vidéo nécessite des outils externes comme FFmpeg.
-        // La méthode `createThumbnail` du ResourceService est utilisée ici comme placeholder.
-        String thumbnailUrl = resourceService.createThumbnail(file);
-
-        Subject subject = subjectRepository.findById(subjectId).orElseThrow(() -> new IllegalArgumentException("Matière introuvable avec l'id : " + subjectId));
-
-        Video video = new Video();
-        video.setTitle(title);
-        video.setDescription(description);
-        video.setDuration(duration);
-        video.setPrice(price);
-        video.setSubject(subject);
-        video.setResourceUrl(fileUrl);
-        video.setThumbnailUrl(thumbnailUrl);
-        video.setPrice((double) file.getSize());
-        video.setCreatedAt(LocalDate.now());
-        video.setNumberOfDownload(0L);
-        video.setNumberOfView(0L);
-
-        return videoRepository.save(video);
-
->>>>>>> 290ed71 (mis ajour ajout de thumbnail)
     }
     String fileUrl = resourceService.storeFile(file, "videos", List.of("mp4"));
 
@@ -100,48 +67,10 @@ public class VideoService {
     }
 
 
-<<<<<<< HEAD
     public void updateVideo(Long id, String title, String description, MultipartFile file) throws Exception {
     Optional<Video> optionalVideo = videoRepository.findById(id);
     if (optionalVideo.isEmpty()) {
         throw new Exception("Vidéo non trouvée");
-=======
-    public void updateVideo(Long id, String title, String description, MultipartFile file) throws Exception{
-        Optional<Video> optionalVideo = videoRepository.findById(id);
-        if (optionalVideo.isEmpty()) {
-            throw new Exception("Vidéo non trouvée");
-        }
-        Video video = optionalVideo.get();
-
-        if (title != null) video.setTitle(title);
-        if (description != null) video.setDescription(description);
-
-        // Si un nouveau fichier est uploadé, on remplace l'ancien
-        if (file != null && !file.isEmpty()) {
-            // Supprimer l’ancien fichier si existant
-            if (video.getResourceUrl() != null) {
-                resourceService.deleteFile(video.getResourceUrl());
-            }
-
-            String filename=(file.getOriginalFilename());
-            String ext =resourceService.getExtension(filename);
-            if (!ext.equals("mp4")) {
-
-                throw new IOException("vous devez envoyer la video en mp4");
-
-            }
-            // Stocker le nouveau fichier dans un dossier dédié "videos"
-            String newFilePath = resourceService.storeFile(file, "videos");
-            video.setResourceUrl(newFilePath);
-            video.setSize(file.getSize());
-
-            // Créer et associer une nouvelle miniature
-            String newThumbnailUrl = resourceService.createThumbnail(file);
-            video.setThumbnailUrl(newThumbnailUrl);
-        }
-
-        videoRepository.save(video);
->>>>>>> 290ed71 (mis ajour ajout de thumbnail)
     }
     Video video = optionalVideo.get();
 

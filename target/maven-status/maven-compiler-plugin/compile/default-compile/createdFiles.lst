@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 com/LDE/monFax_backend/repositories/LectureCourseRepository.class
 com/LDE/monFax_backend/requests/DepartmentRequest.class
 com/LDE/monFax_backend/repositories/ResourceRepository.class
@@ -9,6 +7,7 @@ com/LDE/monFax_backend/services/LectureCourseService.class
 com/LDE/monFax_backend/models/Correction.class
 com/LDE/monFax_backend/models/Resource.class
 com/LDE/monFax_backend/repositories/ProgramRepository.class
+com/LDE/monFax_backend/configuration/OpenApiConfig.class
 com/LDE/monFax_backend/dto/RegisterDTO.class
 com/LDE/monFax_backend/repositories/VideoRepository.class
 com/LDE/monFax_backend/controllers/AuthController.class
@@ -21,9 +20,10 @@ com/LDE/monFax_backend/repositories/ExamRepository.class
 com/LDE/monFax_backend/repositories/UserRepository.class
 com/LDE/monFax_backend/models/LectureCourse.class
 com/LDE/monFax_backend/controllers/CorrectionController.class
+com/LDE/monFax_backend/configuration/corsConfigurer$1.class
 com/LDE/monFax_backend/services/ImageThumbnailGenerator.class
-com/LDE/monFax_backend/services/AuthService.class
 com/LDE/monFax_backend/services/ResourceService.class
+com/LDE/monFax_backend/services/AuthService.class
 com/LDE/monFax_backend/controllers/UserController.class
 com/LDE/monFax_backend/repositories/FacultyRepository.class
 com/LDE/monFax_backend/enumerations/ExamType.class
@@ -49,6 +49,7 @@ com/LDE/monFax_backend/models/Faculty.class
 com/LDE/monFax_backend/controllers/ProgramController.class
 com/LDE/monFax_backend/services/PaymentService.class
 com/LDE/monFax_backend/services/ExamService.class
+com/LDE/monFax_backend/configuration/corsConfigurer.class
 com/LDE/monFax_backend/models/Program.class
 com/LDE/monFax_backend/repositories/DepartmentRepository.class
 com/LDE/monFax_backend/models/Exam.class
@@ -61,11 +62,10 @@ com/LDE/monFax_backend/enumerations/PaymentStatus.class
 com/LDE/monFax_backend/enumerations/UserType.class
 com/LDE/monFax_backend/configuration/SecurityConfig.class
 com/LDE/monFax_backend/models/Faculty$FacultyBuilder.class
-com/LDE/monFax_backend/MonFaxBackendApplication.class
 com/LDE/monFax_backend/models/User.class
+com/LDE/monFax_backend/MonFaxBackendApplication.class
 com/LDE/monFax_backend/models/Video.class
 com/LDE/monFax_backend/services/VideoService.class
-com/LDE/monFax_backend/exception/PaymentException.class
 com/LDE/monFax_backend/services/UserService.class
 com/LDE/monFax_backend/requests/FacultyRequest.class
->>>>>>> 290ed71 (mis ajour ajout de thumbnail)
+com/LDE/monFax_backend/exception/PaymentException.class
