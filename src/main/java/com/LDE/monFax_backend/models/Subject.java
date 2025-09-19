@@ -20,6 +20,8 @@ public class Subject {
     private long id;
     private String name;
     private Double price;
+    private String filiere;
+    private String niveau;
 
     @ManyToOne
     @JsonBackReference
