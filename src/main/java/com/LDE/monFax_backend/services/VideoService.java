@@ -21,6 +21,7 @@ public class VideoService {
     private final VideoRepository videoRepository;
     private final SubjectRepository subjectRepository;
     private final ResourceService resourceService;
+    private static final String DEFAULT_THUMBNAIL = "assets/default-pdf.png";
 
     public List<Video> getAllVideos() {
         return videoRepository.findAll();
@@ -36,17 +37,32 @@ public class VideoService {
     }
 
     public Video createVideo(String title, String description, Double duration, Double price, Long subjectId, MultipartFile file) throws IOException {
-    // On stocke le fichier dans /uploads/videos
+    // Vérifier l’extension du fichier
     String filename = file.getOriginalFilename();
     String ext = resourceService.getExtension(filename);
-    if (!ext.equals("mp4")) {
-        throw new IOException("vous devez envoyer la video en mp4");
+    if (!ext.equalsIgnoreCase("mp4")) {
+        throw new IOException("Vous devez envoyer la vidéo au format mp4");
     }
+
+    // Stocker le fichier dans /uploads/videos
     String fileUrl = resourceService.storeFile(file, "videos", List.of("mp4"));
 
+    // Génération de la vignette
+    String thumbnailUrl;
+    try {
+        String absolutePath = System.getProperty("user.dir") + fileUrl;
+        String thumbnailName = filename.replaceAll("\\.mp4$", "") + "_thumb.png";
+        thumbnailUrl = resourceService.generateVideoThumbnail(absolutePath, System.getProperty("user.dir") + "/uploads/thumbnails", thumbnailName);
+    } catch (InterruptedException e) {
+        Thread.currentThread().interrupt(); // bonne pratique
+        thumbnailUrl = "assets/default-pdf.png"; // vignette par défaut en cas d'erreur
+    }
+
+    // Récupérer la matière
     Subject subject = subjectRepository.findById(subjectId)
             .orElseThrow(() -> new IllegalArgumentException("Matière introuvable avec l'id : " + subjectId));
 
+    // Créer et sauvegarder l’objet vidéo
     Video video = new Video();
     video.setTitle(title);
     video.setDescription(description);
@@ -55,12 +71,14 @@ public class VideoService {
     video.setSubject(subject);
     video.setResourceUrl(fileUrl);
     video.setSize(file.getSize());
+    video.setThumbnailUrl(thumbnailUrl);
     video.setCreatedAt(LocalDate.now());
     video.setNumberOfDownload(0L);
     video.setNumberOfView(0L);
 
     return videoRepository.save(video);
 }
+
 
     public void deleteVideo(Long id) {
         videoRepository.deleteById(id);

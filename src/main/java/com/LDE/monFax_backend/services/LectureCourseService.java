@@ -3,7 +3,6 @@ package com.LDE.monFax_backend.services;
 
 import com.LDE.monFax_backend.models.LectureCourse;
 import com.LDE.monFax_backend.models.Subject;
-import com.LDE.monFax_backend.models.Video;
 import com.LDE.monFax_backend.repositories.LectureCourseRepository;
 import com.LDE.monFax_backend.repositories.SubjectRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +22,7 @@ public class LectureCourseService {
     private final LectureCourseRepository lectureCourseRepository;
     private final SubjectRepository subjectRepository;
     private final ResourceService resourceService;
+    private static final String DEFAULT_THUMBNAIL = "assets/default-pdf.png";
 
     public List<LectureCourse> getAllCourses() {
         return lectureCourseRepository.findAll();
@@ -38,7 +38,22 @@ public class LectureCourseService {
     }
 
     public LectureCourse createCourse(String title, String description, Double price, Long subjectId, MultipartFile file) throws IOException {
+    
+    String filename = file.getOriginalFilename();
+        String ext = resourceService.getExtension(filename);
+        if (!ext.equalsIgnoreCase("pdf") && !ext.equalsIgnoreCase("docx")) {
+            throw new IOException("Format de fichier invalide (uniquement PDF ou DOCX).");
+        }
+
     String fileUrl = resourceService.storeFile(file, "courses", List.of("pdf", "docx"));
+    String thumbnailUrl;
+        if (ext.equalsIgnoreCase("pdf")) {
+            String absolutePath = System.getProperty("user.dir") + fileUrl;
+            String thumbnailName = filename.replaceAll("\\.pdf$", "") + "_thumb";
+            thumbnailUrl = resourceService.generatePdfThumbnailFromFile(absolutePath, System.getProperty("user.dir") + "/uploads/thumbnails", thumbnailName);
+        } else {
+            thumbnailUrl = DEFAULT_THUMBNAIL;
+        }
 
     Subject subject = subjectRepository.findById(subjectId)
             .orElseThrow(() -> new IllegalArgumentException("Matière introuvable avec l'id : " + subjectId));
@@ -50,6 +65,7 @@ public class LectureCourseService {
     course.setSubject(subject);
     course.setResourceUrl(fileUrl);
     course.setSize(file.getSize());
+    course.setThumbnailUrl(thumbnailUrl);
     course.setCreatedAt(LocalDate.now());
     course.setNumberOfDownload(0L);
     course.setNumberOfView(0L);

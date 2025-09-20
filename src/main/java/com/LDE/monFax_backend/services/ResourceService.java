@@ -107,6 +107,24 @@ public class ResourceService {
         return "/uploads/thumbnails/" + thumbnailName + ".png";
     }
 }
+public String generateVideoThumbnail(String videoPath, String outputDir, String thumbnailName) throws IOException, InterruptedException {
+    File dir = new File(outputDir);
+    if (!dir.exists()) dir.mkdirs();
+
+    String thumbnailPath = outputDir + File.separator + thumbnailName + ".png";
+
+    // Commande FFmpeg pour extraire une image à 1 seconde
+    String[] cmd = {"ffmpeg", "-i", videoPath, "-ss", "00:00:01.000", "-vframes", "1", thumbnailPath};
+    Process process = new ProcessBuilder(cmd).redirectErrorStream(true).start();
+    int exitCode = process.waitFor();
+
+    if (exitCode != 0) {
+        throw new IOException("Erreur lors de la génération de la vignette pour la vidéo : " + videoPath);
+    }
+
+    return thumbnailPath.replace(System.getProperty("user.dir"), ""); // retourne le chemin relatif
+}
+
 
     public void increaseNumberOfViews(Resource resource) {
         resource.setNumberOfView(resource.getNumberOfView() + 1);

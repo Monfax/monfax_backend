@@ -19,6 +19,7 @@ public class LectureCourse extends Resource {
     private String description;
 
     private Double price ;
+    private String thumbnailUrl;
 
     @ManyToOne
     @JsonBackReference
