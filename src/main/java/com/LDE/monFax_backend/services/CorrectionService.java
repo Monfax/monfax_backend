@@ -26,6 +26,7 @@ public class CorrectionService {
     private final CorrectionRepository correctionRepository;
     private final ExamRepository examRepository;
     private final ResourceService resourceService;
+    private static final String DEFAULT_THUMBNAIL = "assets/default-pdf.png";
 
     public Page<Correction> getAllCorrections(int page, int size) {
     Pageable pageable = PageRequest.of(page, size);
@@ -42,12 +43,27 @@ public class CorrectionService {
     }
 
     public Correction createCorrection(String title, Double price, Long examId, MultipartFile file) throws IOException {
+        String filename = file.getOriginalFilename();
+        String ext = resourceService.getExtension(filename);
+        if (!ext.equalsIgnoreCase("pdf") && !ext.equalsIgnoreCase("docx")) {
+            throw new IOException("Format de fichier invalide (uniquement PDF ou DOCX).");
+        }
         // Upload fichier
 
         String fileUrl = resourceService.storeFile(file, "corrections", List.of("pdf", "docx"));
+        String thumbnailUrl;
+        if (ext.equalsIgnoreCase("pdf")) {
+            String absolutePath = System.getProperty("user.dir") + fileUrl;
+            String thumbnailName = filename.replaceAll("\\.pdf$", "") + "_thumb";
+            thumbnailUrl = resourceService.generatePdfThumbnailFromFile(absolutePath, System.getProperty("user.dir") + "/uploads/thumbnails", thumbnailName);
+        } else {
+            thumbnailUrl = DEFAULT_THUMBNAIL;
+        }
+
         // Lier à l'examen
         Exam exam = examRepository.findById(examId)
                 .orElseThrow(() -> new IllegalArgumentException("epreuve introuvable avec l'id : " + examId));
+
 
         // Création de l'objet Correction
         Correction correction = new Correction();
@@ -57,6 +73,7 @@ public class CorrectionService {
         correction.setExam(exam);
         correction.setResourceUrl(fileUrl);
         correction.setCreatedAt(LocalDate.now());
+        correction.setThumbnailUrl(thumbnailUrl);
         correction.setNumberOfDownload(0L);
         correction.setNumberOfView(0L);
         return correctionRepository.save(correction);

@@ -14,7 +14,10 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
-    @Query("SELECT COUNT(u) FROM users u WHERE u.createdAt >= :dateLimit")
+
+    @Query("SELECT COUNT(u) FROM User u WHERE u.createdAt >= :dateLimit")
     long countUsersRegisteredSince(@Param("dateLimit") LocalDateTime dateLimit);
+
     List<User> findTop5ByOrderByLastLoginDesc();
 }
+

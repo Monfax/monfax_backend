@@ -15,6 +15,7 @@ import java.util.List;
     public class Correction extends Resource{
 
         private Double price;
+        private String thumbnailUrl;
 
         @OneToOne
         @JoinColumn(name = "exam_id", referencedColumnName = "id")
