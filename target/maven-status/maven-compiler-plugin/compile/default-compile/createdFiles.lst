@@ -12,7 +12,6 @@ com/LDE/monFax_backend/dto/RegisterDTO.class
 com/LDE/monFax_backend/repositories/VideoRepository.class
 com/LDE/monFax_backend/controllers/AuthController.class
 com/LDE/monFax_backend/exceptions/UserNotFoundException.class
-com/LDE/monFax_backend/controllers/ExamController.class
 com/LDE/monFax_backend/services/SubjectService.class
 com/LDE/monFax_backend/controllers/DepartmentController.class
 com/LDE/monFax_backend/repositories/ExamRepository.class
@@ -30,6 +29,7 @@ com/LDE/monFax_backend/repositories/SubjectRepository.class
 com/LDE/monFax_backend/repositories/SemesterRepository.class
 com/LDE/monFax_backend/services/FacultyService.class
 com/LDE/monFax_backend/models/Payment.class
+com/LDE/monFax_backend/models/Filiere.class
 com/LDE/monFax_backend/models/Subject.class
 com/LDE/monFax_backend/controllers/LectureCourseController.class
 com/LDE/monFax_backend/controllers/ResourceController.class
@@ -52,6 +52,7 @@ com/LDE/monFax_backend/models/Program.class
 com/LDE/monFax_backend/repositories/DepartmentRepository.class
 com/LDE/monFax_backend/models/Exam.class
 com/LDE/monFax_backend/services/ProgramService.class
+com/LDE/monFax_backend/models/Niveau.class
 com/LDE/monFax_backend/dto/LoginDTO.class
 com/LDE/monFax_backend/repositories/PaymentRepository.class
 com/LDE/monFax_backend/services/CorrectionService.class

@@ -8,7 +8,9 @@
 /home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/controllers/DepartmentController.java
 /home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/controllers/ExamController.java
 /home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/controllers/FacultyController.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/controllers/FiliereController.java
 /home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/controllers/LectureCourseController.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/controllers/NiveauController.java
 /home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/controllers/PaymentController.java
 /home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/controllers/ProgramController.java
 /home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/controllers/ResourceController.java
@@ -27,7 +29,9 @@
 /home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/models/Department.java
 /home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/models/Exam.java
 /home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/models/Faculty.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/models/Filiere.java
 /home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/models/LectureCourse.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/models/Niveau.java
 /home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/models/Payment.java
 /home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/models/Program.java
 /home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/models/Resource.java
@@ -39,7 +43,9 @@
 /home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/repositories/DepartmentRepository.java
 /home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/repositories/ExamRepository.java
 /home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/repositories/FacultyRepository.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/repositories/FiliereRepository.java
 /home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/repositories/LectureCourseRepository.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/repositories/NiveauRepository.java
 /home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/repositories/PaymentRepository.java
 /home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/repositories/ProgramRepository.java
 /home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/repositories/ResourceRepository.java
@@ -56,8 +62,10 @@
 /home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/services/DepartmentService.java
 /home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/services/ExamService.java
 /home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/services/FacultyService.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/services/FiliereService.java
 /home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/services/JwtService.java
 /home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/services/LectureCourseService.java
+/home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/services/NiveauService.java
 /home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/services/PaymentService.java
 /home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/services/ProgramService.java
 /home/yan/monfax_backend/src/main/java/com/LDE/monFax_backend/services/ResourceService.java
