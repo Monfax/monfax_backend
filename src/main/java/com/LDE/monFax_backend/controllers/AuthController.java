@@ -38,6 +38,9 @@ public class AuthController {
                 "id", user.getId(),
                 "username", user.getUsername(),
                 "email", user.getEmail(),
+                "numero", user.getNumero(),
+                "dateNaissance", user.getDateNaissance(),
+                "filiere", user.getFiliere(),
                 "role", user.getRole()
         ));
     }

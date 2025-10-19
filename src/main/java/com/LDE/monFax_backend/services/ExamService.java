@@ -1,33 +1,45 @@
 package com.LDE.monFax_backend.services;
 
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.LDE.monFax_backend.enumerations.ExamType;
 import com.LDE.monFax_backend.models.Exam;
 import com.LDE.monFax_backend.models.Subject;
 import com.LDE.monFax_backend.repositories.ExamRepository;
 import com.LDE.monFax_backend.repositories.SubjectRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class ExamService {
+
     private final ExamRepository examRepository;
     private final SubjectRepository subjectRepository;
     private final ResourceService resourceService;
+
+    public Page<Exam> getAllExams(int page, int size) {
+    Pageable pageable = PageRequest.of(page, size);
+    return examRepository.findAll(pageable);
+}
+
+    private static final String DEFAULT_THUMBNAIL = "assets/default-pdf.png";
 
     public List<Exam> getAllExams() {
         return examRepository.findAll();
     }
 
     public Optional<Exam> getExamById(Long id) {
-        Optional<Exam> exam =  examRepository.findById(id);
+        Optional<Exam> exam = examRepository.findById(id);
         exam.ifPresent(foundExam -> {
             resourceService.increaseNumberOfViews(foundExam);
             examRepository.save(foundExam);
@@ -36,20 +48,27 @@ public class ExamService {
     }
 
     public Exam createExam(String title, String type, int year, Long subjectId, MultipartFile file) throws IOException {
-        // 1. Upload du fichier
-        String filename = (file.getOriginalFilename());
+        String filename = file.getOriginalFilename();
         String ext = resourceService.getExtension(filename);
-        if (!ext.equals("pdf") && !ext.equals("docx") ) {
-            throw new IOException("format de fichier invalide ");
+        if (!ext.equalsIgnoreCase("pdf") && !ext.equalsIgnoreCase("docx")) {
+            throw new IOException("Format de fichier invalide (uniquement PDF ou DOCX).");
+        }
+        // 1. Stocker le fichier sur disque
+        String fileUrl = resourceService.storeFile(file, "exams", List.of("pdf", "docx"));
+
+        // 2. Générer automatiquement la vignette à partir du fichier stocké si PDF
+        String thumbnailUrl;
+        if (ext.equalsIgnoreCase("pdf")) {
+            String absolutePath = System.getProperty("user.dir") + fileUrl;
+            String thumbnailName = filename.replaceAll("\\.pdf$", "") + "_thumb";
+            thumbnailUrl = resourceService.generatePdfThumbnailFromFile(absolutePath, System.getProperty("user.dir") + "/uploads/thumbnails", thumbnailName);
+        } else {
+            thumbnailUrl = DEFAULT_THUMBNAIL;
         }
 
-        String fileUrl = resourceService.storeFile(file, "exams");
-
-        // 2. Récupérer la matière
         Subject subject = subjectRepository.findById(subjectId)
                 .orElseThrow(() -> new IllegalArgumentException("Sujet introuvable avec l'id : " + subjectId));
 
-        // 3. Créer et sauvegarder l'examen
         Exam exam = new Exam();
         exam.setTitle(title);
         exam.setType(ExamType.valueOf(type.toUpperCase()));
@@ -57,6 +76,7 @@ public class ExamService {
         exam.setSize(file.getSize());
         exam.setSubject(subject);
         exam.setResourceUrl(fileUrl);
+        exam.setThumbnailUrl(thumbnailUrl);
         exam.setCreatedAt(LocalDate.now());
         exam.setNumberOfDownload(0L);
         exam.setNumberOfView(0L);
@@ -67,55 +87,48 @@ public class ExamService {
     public String deleteExam(Long id) {
         try {
             if (!examRepository.existsById(id)) {
-                return "Erreur : L'epreuve avec l'id " + id + " n'existe pas.";
+                return "Erreur : L'épreuve avec l'id " + id + " n'existe pas.";
             }
             examRepository.deleteById(id);
-            return "Suppression de l'epreuve avec l'id " + id + " réussie.";
+            return "Suppression de l'épreuve avec l'id " + id + " réussie.";
         } catch (Exception e) {
-            return "Erreur lors de la suppression de l'epreuve  : " + e.getMessage();
-        }    }
+            return "Erreur lors de la suppression de l'épreuve : " + e.getMessage();
+        }
+    }
 
-    public Exam updateExam (Long id, String title, ExamType examType,int year, MultipartFile file) throws IOException {
+    public Exam updateExam(Long id, String title, ExamType examType, int year, MultipartFile file) throws IOException {
         Exam existingExam = examRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("epreuve  inexistante avec l'id " + id));
+                .orElseThrow(() -> new RuntimeException("Épreuve inexistante avec l'id " + id));
 
-        // Mise à jour des champs simples
-        if (title != null)  existingExam.setTitle(title);
-        if (examType != null)  existingExam.setType(examType);
-        if (year !=0)  existingExam.setYear(year);
+        if (title != null) existingExam.setTitle(title);
+        if (examType != null) existingExam.setType(examType);
+        if (year != 0) existingExam.setYear(year);
 
-
-        // Si un nouveau fichier est uploadé, on remplace l'ancien fichier
         if (file != null && !file.isEmpty()) {
-            // Supprimer l'ancien fichier physique
             if (existingExam.getResourceUrl() != null) {
                 resourceService.deleteFile(existingExam.getResourceUrl());
             }
-
-            // Enregistrer le nouveau fichier et mettre à jour resourceUrl et size
-            String originalFilename = (file.getOriginalFilename());
-            String ext = resourceService.getExtension(originalFilename);
-            if (!ext.equals("pdf") && !ext.equals("docx") ) {
-                throw new IOException("format de fichier invalide ");
+            String ext = resourceService.getExtension(file.getOriginalFilename());
+            if (!ext.equalsIgnoreCase("pdf") && !ext.equalsIgnoreCase("docx")) {
+                throw new IOException("Format de fichier invalide (uniquement PDF ou DOCX).");
             }
-            String newResourceUrl = resourceService.storeFile(file,"exams");
+            String newResourceUrl = resourceService.storeFile(file, "exams", List.of("pdf", "docx"));
             existingExam.setResourceUrl(newResourceUrl);
             existingExam.setSize(file.getSize());
+
+            if (ext.equalsIgnoreCase("pdf")) {
+                String absolutePath = System.getProperty("user.dir") + newResourceUrl;
+                String thumbnailName = file.getOriginalFilename().replaceAll("\\.pdf$", "") + "_thumb";
+                String newThumbnailUrl = resourceService.generatePdfThumbnailFromFile(absolutePath, System.getProperty("user.dir") + "/uploads/thumbnails", thumbnailName);
+                existingExam.setThumbnailUrl(newThumbnailUrl);
+            } else {
+                existingExam.setThumbnailUrl(DEFAULT_THUMBNAIL);
+            }
         }
 
         return examRepository.save(existingExam);
     }
-    public long getTotalExams() {
+    public long getTotalExams(){
         return examRepository.count();
     }
-    public long getExamsCountByType(ExamType type) {
-        return examRepository.countByType(type);
-    }
-
-
-
-    public List<Exam> getExamsBySubjectId(Long subjectId) {
-        return examRepository.findBySubjectId(subjectId);
-    }
-
 }

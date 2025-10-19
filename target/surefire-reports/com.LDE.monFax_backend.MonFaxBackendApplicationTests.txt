@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.LDE.monFax_backend.MonFaxBackendApplicationTests
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 13.96 s -- in com.LDE.monFax_backend.MonFaxBackendApplicationTests

@@ -21,6 +21,7 @@ public class Video extends Resource{
     private Double duration;
 
     private Double price;
+    private String thumbnailUrl;
 
     @ManyToOne
     @JsonBackReference

@@ -10,10 +10,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
+
 import java.io.IOException;
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 @RestController
+@SecurityRequirement(name = "bearerAuth")
 @RequestMapping("/api/resources")
 @RequiredArgsConstructor
 public class ResourceController {
@@ -21,8 +26,10 @@ public class ResourceController {
     private final ResourceRepository resourceRepository;
 
     @GetMapping
-    public ResponseEntity<List<Resource>> getAllResources() {
-        return ResponseEntity.ok(resourceService.getAllResources());
+    public ResponseEntity<Page<Resource>> getAllResources(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size) {
+    return ResponseEntity.ok(resourceService.getAllResources(page, size));
     }
 
     @GetMapping("/{id}")

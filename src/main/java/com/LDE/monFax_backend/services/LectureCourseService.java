@@ -3,7 +3,6 @@ package com.LDE.monFax_backend.services;
 
 import com.LDE.monFax_backend.models.LectureCourse;
 import com.LDE.monFax_backend.models.Subject;
-import com.LDE.monFax_backend.models.Video;
 import com.LDE.monFax_backend.repositories.LectureCourseRepository;
 import com.LDE.monFax_backend.repositories.SubjectRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +22,7 @@ public class LectureCourseService {
     private final LectureCourseRepository lectureCourseRepository;
     private final SubjectRepository subjectRepository;
     private final ResourceService resourceService;
+    private static final String DEFAULT_THUMBNAIL = "assets/default-pdf.png";
 
     public List<LectureCourse> getAllCourses() {
         return lectureCourseRepository.findAll();
@@ -38,25 +38,40 @@ public class LectureCourseService {
     }
 
     public LectureCourse createCourse(String title, String description, Double price, Long subjectId, MultipartFile file) throws IOException {
-        String fileUrl = resourceService.storeFile(file, "courses");
+    
+    String filename = file.getOriginalFilename();
+        String ext = resourceService.getExtension(filename);
+        if (!ext.equalsIgnoreCase("pdf") && !ext.equalsIgnoreCase("docx")) {
+            throw new IOException("Format de fichier invalide (uniquement PDF ou DOCX).");
+        }
 
-        Subject subject = subjectRepository.findById(subjectId)
-                .orElseThrow(() -> new IllegalArgumentException("Matière introuvable avec l'id : " + subjectId));
+    String fileUrl = resourceService.storeFile(file, "courses", List.of("pdf", "docx"));
+    String thumbnailUrl;
+        if (ext.equalsIgnoreCase("pdf")) {
+            String absolutePath = System.getProperty("user.dir") + fileUrl;
+            String thumbnailName = filename.replaceAll("\\.pdf$", "") + "_thumb";
+            thumbnailUrl = resourceService.generatePdfThumbnailFromFile(absolutePath, System.getProperty("user.dir") + "/uploads/thumbnails", thumbnailName);
+        } else {
+            thumbnailUrl = DEFAULT_THUMBNAIL;
+        }
 
-        LectureCourse course = new LectureCourse();
-        course.setTitle(title);
-        course.setDescription(description);
-        course.setPrice(price);
-        course.setSubject(subject);
-        course.setResourceUrl(fileUrl);
-        course.setSize(file.getSize());
-        course.setCreatedAt(LocalDate.now());
-        course.setNumberOfDownload(0L);
-        course.setNumberOfView(0L);
+    Subject subject = subjectRepository.findById(subjectId)
+            .orElseThrow(() -> new IllegalArgumentException("Matière introuvable avec l'id : " + subjectId));
 
-        return lectureCourseRepository.save(course);
-    }
+    LectureCourse course = new LectureCourse();
+    course.setTitle(title);
+    course.setDescription(description);
+    course.setPrice(price);
+    course.setSubject(subject);
+    course.setResourceUrl(fileUrl);
+    course.setSize(file.getSize());
+    course.setThumbnailUrl(thumbnailUrl);
+    course.setCreatedAt(LocalDate.now());
+    course.setNumberOfDownload(0L);
+    course.setNumberOfView(0L);
 
+    return lectureCourseRepository.save(course);
+}
     public void deleteCourse(Long id) {
         lectureCourseRepository.deleteById(id);
     }
@@ -64,30 +79,29 @@ public class LectureCourseService {
 
 
 
-    public LectureCourse updateCourse(Long id, String title, String description,Double price, MultipartFile file) throws IOException {
-        LectureCourse lectureCourse = lectureCourseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("support de Cours  non trouvé"));
+    public LectureCourse updateCourse(Long id, String title, String description, Double price, MultipartFile file) throws IOException {
+    LectureCourse lectureCourse = lectureCourseRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("support de Cours  non trouvé"));
 
-        if (title != null) lectureCourse.setTitle(title);
-        if (description != null) lectureCourse.setDescription(description);
-        if (price != null)lectureCourse.setPrice(price);
-        if (file != null && !file.isEmpty()) {
-            resourceService.deleteFile(lectureCourse.getResourceUrl());
+    if (title != null) lectureCourse.setTitle(title);
+    if (description != null) lectureCourse.setDescription(description);
+    if (price != null) lectureCourse.setPrice(price);
 
-            String originalFilename=(file.getOriginalFilename());
-            String ext =resourceService.getExtension(originalFilename);
-            if (!ext.equals("pdf") && !ext.equals("docx")) {
+    if (file != null && !file.isEmpty()) {
+        resourceService.deleteFile(lectureCourse.getResourceUrl());
 
-                throw new IOException("mauvais format de fichier ");
-
-            }
-            String fileName = resourceService.storeFile(file,"Courses");
-            lectureCourse.setResourceUrl(fileName);
-            lectureCourse.setSize(file.getSize());
+        String originalFilename = file.getOriginalFilename();
+        String ext = resourceService.getExtension(originalFilename);
+        if (!ext.equals("pdf") && !ext.equals("docx")) {
+            throw new IOException("mauvais format de fichier ");
         }
-
-        return lectureCourseRepository.save(lectureCourse);
+        String fileName = resourceService.storeFile(file, "courses", List.of("pdf", "docx"));
+        lectureCourse.setResourceUrl(fileName);
+        lectureCourse.setSize(file.getSize());
     }
+
+    return lectureCourseRepository.save(lectureCourse);
+}
     public long getTotalCourses() {
         return lectureCourseRepository.count();
     }

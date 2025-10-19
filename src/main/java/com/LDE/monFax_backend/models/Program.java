@@ -28,4 +28,8 @@ public class Program {
     @OneToMany(mappedBy = "program", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Semester> semester = new ArrayList<>();
+    @ManyToOne
+    @JsonBackReference
+    @JoinColumn(name = "filiere_id")
+    private Filiere filiere;
 }

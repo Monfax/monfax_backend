@@ -11,9 +11,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.data.domain.Page;
+
 
 import java.io.IOException;
 import java.util.List;
@@ -21,7 +24,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/corrections")
 @Tag(name = "Corrections", description = "API pour gérer les corrections d'epreuves")
-
 @RequiredArgsConstructor
 public class CorrectionController {
 
@@ -29,16 +31,19 @@ public class CorrectionController {
 
     @GetMapping
     @Operation(
-            summary = "Lister toutes les corrections",
-            description = "Récupère la liste complète des corrections disponibles",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Liste des corrections récupérée",
-                            content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = Correction.class))) } )
-    public ResponseEntity<List<Correction>> getAllCorrections() {
-        return ResponseEntity.ok(correctionService.getAllCorrections());
+        summary = "Lister les corrections avec pagination",
+        description = "Récupère une liste paginée des corrections disponibles",
+        responses = {
+                @ApiResponse(responseCode = "200", description = "Liste paginée des corrections récupérée",
+                        content = @Content(mediaType = "application/json",
+                                schema = @Schema(implementation = Correction.class)))
+        }
+    )
+    public ResponseEntity<Page<Correction>> getAllCorrections(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size) {
+    return ResponseEntity.ok(correctionService.getAllCorrections(page, size));
     }
-
 
     @GetMapping("/{id}")
     @Operation(
@@ -57,40 +62,31 @@ public class CorrectionController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    @Operation(
-            summary = "Créer une nouvelle correction",
-            description = "Crée une correction liée à un examen donné avec un fichier uploadé",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Correction créée avec succès"),
-                    @ApiResponse(responseCode = "400", description = "Requête invalide (erreur lors de la création)")
-            }
-    )
-    public ResponseEntity<String> createCorrection(
-        @Parameter(description = "Titre de la correction", required = true)
-        @RequestParam("title") String title,
-        @Parameter(description = "Prix de la correction", required = true)
-        @RequestParam("price") Double price,
-        @Parameter(description = "ID de l'examen lié", required = true)
-        @RequestParam("examId") Long examId,
-        @Parameter(description = "Fichier de la correction au format PDF ou DOCX", required = true)
-        @RequestParam("file") MultipartFile file) {
-        try {
-            Correction correction = correctionService.createCorrection(title, price, examId, file);
-            return ResponseEntity.ok("creation de la correction effectuée avec success");
-        } catch (IllegalArgumentException | IOException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+@Operation(
+    summary = "Créer une nouvelle correction",
+    description = "Crée une correction liée à un examen donné avec un fichier uploadé",
+    responses = {
+        @ApiResponse(responseCode = "200", description = "Correction créée avec succès"),
+        @ApiResponse(responseCode = "400", description = "Requête invalide (erreur lors de la création)")
     }
-
-    @Operation(summary = "Mettre à jour une correction",
-            description = "Mettre à jour une correction existante avec possibilité de changer le fichier.",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Correction mise à jour avec succès",
-                            content = @Content(schema = @Schema(implementation = Correction.class))),
-                    @ApiResponse(responseCode = "404", description = "Correction non trouvée"),
-                    @ApiResponse(responseCode = "500", description = "Erreur serveur")
-            })
+)
+public ResponseEntity<String> createCorrection(
+    @Parameter(description = "Titre de la correction", required = true)
+    @RequestParam("title") String title,
+    @Parameter(description = "Prix de la correction", required = true)
+    @RequestParam("price") Double price,
+    @Parameter(description = "ID de l'examen lié", required = true)
+    @RequestParam("examId") Long examId,
+    @Parameter(description = "Fichier de la correction au format PDF ou DOCX", required = true)
+    @RequestPart("file") MultipartFile file) {
+    try {
+        Correction correction = correctionService.createCorrection(title, price, examId, file);
+        return ResponseEntity.ok("creation de la correction effectuée avec success");
+    } catch (IllegalArgumentException | IOException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }
+}
     @PutMapping("/{id}")
     public ResponseEntity<Correction> updateCorrection(
             @Parameter(description = "ID de la correction à mettre à jour", required = true)

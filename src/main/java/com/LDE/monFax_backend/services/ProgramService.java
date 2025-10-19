@@ -26,18 +26,14 @@ public class ProgramService {
         program.setDepartment(department);
         program.setName(programRequest.getName());
         Program savedProgram = programRepository.save(program);
+        for(int i = 1 ; i <= 10 ;i++){
+            Semester semester = new Semester();
+            semester.setProgram(program);
+            semester.setName("Semester" + i);
+            semester.setPrice(1000.0);
+            semesterRepository.save(semester);
+        }
 
-        Semester semester1 = new Semester();
-        semester1.setProgram(program);
-        semester1.setName("Semestre 1");
-        semester1.setPrice(1000.0);
-        semesterRepository.save(semester1);
-
-        Semester semester2 = new Semester();
-        semester2.setProgram(program);
-        semester2.setName("Semestre 2");
-        semester2.setPrice(1000.0);
-        semesterRepository.save(semester2);
 
         return savedProgram;
     }

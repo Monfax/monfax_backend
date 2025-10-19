@@ -23,7 +23,7 @@ public class JwtService {
                 .claim("username", user.getUsername())
                 .claim("id", user.getId())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 1 jour
+                .setExpiration(new Date(System.currentTimeMillis() + 864000000)) // expiration token for 10 days.
                 .signWith(Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8)), SignatureAlgorithm.HS256)
                 .compact();
     }

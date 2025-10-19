@@ -12,21 +12,18 @@ import java.util.List;
 
 @Entity
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class LectureCourse extends Resource {
-
-    private String description;
-
-    private Double price ;
-    private String thumbnailUrl;
-
+@NoArgsConstructor
+public class Filiere {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+    private String name;
+    @OneToMany(mappedBy = "filiere", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Program> programs = new ArrayList<>();
     @ManyToOne
     @JsonBackReference
-    @JoinColumn(name = "subject_id")
-    private Subject subject;
-
-    @OneToMany(mappedBy = "lectureCourse", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<Payment> payments = new ArrayList<>();
+    @JoinColumn(name = "niveau_id")
+    private Niveau niveau;
 }
